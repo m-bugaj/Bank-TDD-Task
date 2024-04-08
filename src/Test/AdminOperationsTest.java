@@ -43,7 +43,7 @@ public class AdminOperationsTest {
         admin.modifyCustomerSettings(customer, "Jan Nowak", 321321321);
 
         assertEquals("Jan Nowak", customer.getName());
-        assertEquals(321321321, customer.getPhoneNumber());
+        assertEquals("321321321", customer.getPhoneNumber());
     }
 
     @Test

@@ -44,10 +44,10 @@ public class CustomerOperationsTest {
         assertTrue(customer1.getAccountNumber().matches(regex));
         assertTrue(customer2.getAccountNumber().matches(regex));
 
-        int balance1Before = customer1.getBalance();
-        int balance2Before = customer2.getBalance();
+        float balance1Before = customer1.getBalance();
+        float balance2Before = customer2.getBalance();
 
-        float transferAmount = 1000F; // Przyjmujemy kwotę przelewu równą 1000
+        int transferAmount = 1000; // Przyjmujemy kwotę przelewu równą 1000
         customer1.sendMoney(customer2.getAccountNumber(), transferAmount);
 
         assertEquals(balance1Before - transferAmount, customer1.getBalance());
@@ -64,8 +64,8 @@ public class CustomerOperationsTest {
 
         Customer customer = getCustomerByMail("jankowalski@example.com");
 
-        int balanceBefore = customer.getBalance();
-        float testCredit = 100F;
+        float balanceBefore = customer.getBalance();
+        int testCredit = 100;
         float interestRate = 0.2F;
 
         // Metoda takeCredit() powinna zwrócić saldo po pożyczce a następnie zmodyfikować saldo do stanu po zwróceniu pożyczki
