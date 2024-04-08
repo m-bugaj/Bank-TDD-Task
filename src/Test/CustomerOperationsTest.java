@@ -19,13 +19,13 @@ public class CustomerOperationsTest {
 
         admin.addCustomer("Jan Kowalski", "jankowalski@example.com", "4321432143214321", "123123123");
 
-        Customer customer = getCustomerByMail("jankowalski@example.com");
+        Customer customer = admin.getCustomerByMail("jankowalski@example.com");
 
         float balanceBefore = customer.getBalance();
         float testDeposit = 20F;
         customer.deposit(testDeposit);
 
-        assertEquals(customer.getBalance(), balanceBefore + testDeposit);
+        assertEquals(customer.getBalance(), balanceBefore + testDeposit, 0);
     }
 
     @Test
@@ -47,11 +47,11 @@ public class CustomerOperationsTest {
         float balance1Before = customer1.getBalance();
         float balance2Before = customer2.getBalance();
 
-        int transferAmount = 1000; // Przyjmujemy kwotę przelewu równą 1000
-        customer1.sendMoney(customer2.getAccountNumber(), transferAmount);
+        float transferAmount = 1000F; // Przyjmujemy kwotę przelewu równą 1000
+        customer1.sendMoney(customer2, transferAmount);
 
-        assertEquals(balance1Before - transferAmount, customer1.getBalance());
-        assertEquals(balance2Before + transferAmount, customer2.getBalance());
+        assertEquals(balance1Before - transferAmount, customer1.getBalance(), 0);
+        assertEquals(balance2Before + transferAmount, customer2.getBalance(), 0);
     }
 
     @Test
@@ -62,17 +62,19 @@ public class CustomerOperationsTest {
 
         admin.addCustomer("Jan Kowalski", "jankowalski@example.com", "4321432143214321", "123123123");
 
-        Customer customer = getCustomerByMail("jankowalski@example.com");
+        Customer customer = admin.getCustomerByMail("jankowalski@example.com");
 
         float balanceBefore = customer.getBalance();
-        int testCredit = 100;
+        System.out.print(balanceBefore);
+        float creditAmount = 100F;
         float interestRate = 0.2F;
 
         // Metoda takeCredit() powinna zwrócić saldo po pożyczce a następnie zmodyfikować saldo do stanu po zwróceniu pożyczki
-        float balanceAfter = customer.takeCredit(testCredit);
+        float balanceAfter = customer.takeCredit(creditAmount, interestRate);
+        customer = admin.getCustomerByMail("jankowalski@example.com");
 
-        assertEquals(balanceAfter, balanceBefore + testCredit);
-        assertEquals(customer.getBalance(), balanceBefore - (testCredit + testCredit * interestRate));
+        assertEquals(balanceAfter, balanceBefore + creditAmount, 0);
+        assertEquals(customer.getBalance(), balanceBefore - (creditAmount + creditAmount * interestRate), 0);
     }
 
     @Test
@@ -100,18 +102,18 @@ public class CustomerOperationsTest {
         sampleReport.add("Depozyt: 2000.0 zł");
 
         float transferAmount = 1000F;
-        customer1.sendMoney(customer2.getAccountNumber(), transferAmount);
+        customer1.sendMoney(customer2, transferAmount);
         sampleReport.add("Wykonano przelew do użytkownika jannowak@example.com: -1000.0 zł");
 
-        float creditAmount = 100F
+        float creditAmount = 100F;
         float interestRate = 0.2F;
         // Metoda takeCredit() powinna zwrócić saldo po pożyczce a następnie zmodyfikować saldo do stanu po zwróceniu pożyczki
-        float balanceAfter = customer.takeCredit(creditAmount);
+        float balanceAfter = customer1.takeCredit(creditAmount, interestRate);
         sampleReport.add("Wzięto pożyczkę wysokości: 100.0 zł");
-        sampleReport.add("Spłacono pożyczkę wraz z odsetkami: " + (creditAmount * (1 + interestRate)) + " zł");
+        sampleReport.add("Spłacono pożyczkę wraz z odsetkami: -" + (creditAmount * (1 + interestRate)) + " zł");
 
         // Pobieramy historię transakcji klienta
-        List<String> transactionHistory = customer1.getTransactionHistory();
+        List<String> transactionHistory = customer1.getReport();
 
         for (int i=0;i<transactionHistory.size();i++) {
             // Sprawdzamy, czy historia transakcji zawiera oczekiwane operacje

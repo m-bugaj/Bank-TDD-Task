@@ -3,6 +3,9 @@ package Test;
 import App.Admin;
 import App.Customer;
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AdminOperationsTest {
@@ -40,7 +43,9 @@ public class AdminOperationsTest {
 
         Customer customer = admin.getCustomerByMail("jankowalski@example.com");
 
-        admin.modifyCustomerSettings(customer, "Jan Nowak", 321321321);
+        admin.modifyCustomerSettings(customer, "Jan Nowak", "321321321");
+
+        customer = admin.getCustomerByMail("jankowalski@example.com");
 
         assertEquals("Jan Nowak", customer.getName());
         assertEquals("321321321", customer.getPhoneNumber());
@@ -55,7 +60,7 @@ public class AdminOperationsTest {
 
         Customer customer = admin.getCustomerByMail("jankowalski@example.com");
 
-        String report = customer.getReport();
+        List<String> report = customer.getReport();
 
         assertNotNull(report);
     }
