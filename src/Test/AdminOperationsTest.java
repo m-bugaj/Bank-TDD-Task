@@ -45,6 +45,14 @@ public class AdminOperationsTest {
     @Test
     public void admin_generateCustomerReport_shouldSucceed() {
         // Test raportu operacji wybranego klienta przez administratora
-        // Sprawdź, czy raport zawiera poprawne informacje o operacjach klienta
+        Admin admin = new Admin();
+
+        admin.addCustomer("Jan Kowalski", "jankowalski@example.com", 123123123);
+
+        Customer customer = admin.getCustomerByMail("jankowalski@example.com");
+
+        String report = customer.getReport();
+
+        assertNotNull(report);
     }
 }
