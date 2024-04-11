@@ -59,7 +59,7 @@ public class BankApplication {
                                 admin.getCustomerByMail(email);
                                 break;
                             case 2:
-                                System.out.println("Podaj email pracownika, którego chcesz usunąć:");
+                                System.out.println("Podaj email klienta, którego chcesz usunąć:");
                                 String customerToRemove = scanner.nextLine();
                                 admin.removeCustomer(customerToRemove);
                                 break;
@@ -130,14 +130,22 @@ public class BankApplication {
                                 break;
                             case 2:
                                 System.out.println("Podaj numer konta na który chcesz przelać pieniądze:");
-                                String accountNumber = scanner.nextLine();
+                                String accountNumber = "";
+                                while (!admin.accountNumberValidation(accountNumber)) {
+                                    accountNumber = scanner.nextLine();
+                                    if (!admin.accountNumberValidation(accountNumber)) System.out.println("Niepoprawny format numeru bankowego!");
+
+                                }
+
                                 Customer recipient = admin.getCustomerByAccountNumber(accountNumber);
+                                if (recipient != null) {
+                                    System.out.println("Podaj kwotę jaką chcesz przelać:");
+                                    float transferAmount = scanner.nextFloat();
+                                    scanner.nextLine();
 
-                                System.out.println("Podaj kwotę jaką chcesz przelać:");
-                                float transferAmount = scanner.nextFloat();
-                                scanner.nextLine();
-
-                                customer.sendMoney(recipient, transferAmount);
+                                    customer.sendMoney(recipient, transferAmount);
+                                } else
+                                    System.out.println("Nie odnaleziono numeru bankowego!");
 
                                 break;
                             case 3:
