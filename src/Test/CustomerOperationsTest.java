@@ -38,7 +38,7 @@ public class CustomerOperationsTest {
         admin.addCustomer("Jan Nowak", "jannowak@example.com", "1234123412341234", "111111222");
 
         Customer customer1 = admin.getCustomerByMail("jankowalski@example.com");
-        Customer customer2 = admin.getCustomerByMail("jannowak@example.com");
+        Customer customer2 = admin.getCustomerByAccountNumber("1234123412341234");
 
         String regex = "\\d{16}"; // Format 16 cyfr
         assertTrue(customer1.getAccountNumber().matches(regex));
@@ -86,7 +86,7 @@ public class CustomerOperationsTest {
         admin.addCustomer("Jan Nowak", "jannowak@example.com", "1234123412341234", "111111222");
 
         Customer customer1 = admin.getCustomerByMail("jankowalski@example.com");
-        Customer customer2 = admin.getCustomerByMail("jannowak@example.com");
+        Customer customer2 = admin.getCustomerByAccountNumber("1234123412341234");
 
         String regex = "\\d{16}"; // Format 16 cyfr
         assertTrue(customer1.getAccountNumber().matches(regex));
@@ -99,7 +99,7 @@ public class CustomerOperationsTest {
 
         float depositAmount = 2000F;
         customer1.deposit(depositAmount);
-        sampleReport.add("Depozyt: 2000.0 zł");
+        sampleReport.add("Depozyt: +2000.0 zł");
 
         float transferAmount = 1000F;
         customer1.sendMoney(customer2, transferAmount);
@@ -109,7 +109,7 @@ public class CustomerOperationsTest {
         float interestRate = 0.2F;
         // Metoda takeCredit() powinna zwrócić saldo po pożyczce a następnie zmodyfikować saldo do stanu po zwróceniu pożyczki
         float balanceAfter = customer1.takeCredit(creditAmount, interestRate);
-        sampleReport.add("Wzięto pożyczkę wysokości: 100.0 zł");
+        sampleReport.add("Wzięto pożyczkę wysokości: +100.0 zł");
         sampleReport.add("Spłacono pożyczkę wraz z odsetkami: -" + (creditAmount * (1 + interestRate)) + " zł");
 
         // Pobieramy historię transakcji klienta
