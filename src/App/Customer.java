@@ -46,7 +46,7 @@ public class Customer {
 
     public void deposit(float depositAmount) {
         this.balance += depositAmount;
-        report.add("Depozyt: " + depositAmount + " zł");
+        report.add("Depozyt: +" + depositAmount + " zł");
     }
 
     public void sendMoney(Customer recipient, float transferAmount) {
@@ -54,12 +54,13 @@ public class Customer {
         this.balance -= transferAmount;
 
         report.add("Wykonano przelew do użytkownika " + recipient.getEmail() + ": -" + transferAmount + " zł");
+        recipient.report.add("Odebrano przelew do użytkownika " + recipient.getEmail() + ": +" + transferAmount + " zł");
     }
 
     public float takeCredit(float creditAmount, float interestRate) {
         float balanceAfter = this.balance + creditAmount;
         this.balance -= creditAmount + interestRate * creditAmount;
-        report.add("Wzięto pożyczkę wysokości: " + creditAmount + " zł");
+        report.add("Wzięto pożyczkę wysokości: +" + creditAmount + " zł");
         report.add("Spłacono pożyczkę wraz z odsetkami: -" + (creditAmount * (1 + interestRate)) + " zł");
         return balanceAfter;
     }
