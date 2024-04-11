@@ -3,6 +3,8 @@ package App;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
+
 public class Admin {
     private final List<Customer> customers;
 
@@ -11,6 +13,11 @@ public class Admin {
     }
 
     public void addCustomer(String name, String email, String accountNumber, String phoneNumber) {
+        if (getCustomerByMail(email) != null) {
+            System.out.println("Klient o podanymm emailu już istnieje!");
+        } else if (getCustomerByAccountNumber(accountNumber) != null) {
+            System.out.println("Klient o podanymm numerze konta już istnieje!");
+        } else
         customers.add(new Customer(name, email, accountNumber, phoneNumber, 0F));
     }
 
@@ -42,5 +49,15 @@ public class Admin {
     public void modifyCustomerSettings(Customer customer, String fullName, String phoneNumber) {
         Customer updatedCustomer = new Customer(fullName, customer.getEmail(), customer.getAccountNumber(), phoneNumber, customer.getBalance());
         customers.replaceAll(c -> c.equals(customer) ? updatedCustomer : c);
+    }
+
+    public boolean accountNumberValidation(String accountNumber) {
+        String regex = "\\d{16}"; // Format 16 cyfr
+        return accountNumber.matches(regex);
+    }
+
+    public boolean phoneNumberValidation(String phoneNumber) {
+        String regex = "\\d{9}"; // Format 9 cyfr
+        return phoneNumber.matches(regex);
     }
 }
