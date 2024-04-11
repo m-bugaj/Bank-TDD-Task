@@ -42,15 +42,21 @@ public class BankApplication {
 
                                 System.out.println("Podaj adres email:");
                                 String email = scanner.nextLine();
+                                while (admin.getCustomerByMail(email) != null) {
+                                    System.out.println("Wybrany email jest już zajęty! Podaj nowy email:");
+                                    email = scanner.nextLine();
+                                }
 
-                                String accountNumber = "";
-                                while(!admin.accountNumberValidation(accountNumber)) {
-                                    System.out.println("Podaj numer konta (16 cyfrowy format):");
+                                System.out.println("Podaj numer konta (16 cyfrowy format):");
+                                String accountNumber = scanner.nextLine();
+                                while (!admin.accountNumberValidation(accountNumber) || admin.getCustomerByAccountNumber(accountNumber) != null) {
+                                    if (!admin.accountNumberValidation(accountNumber)) System.out.println("Podaj numer konta (16 cyfrowy format):");
                                     accountNumber = scanner.nextLine();
+                                    if (admin.getCustomerByAccountNumber(accountNumber) != null) System.out.println("Wybrany numer konta jest już zajęty! Podaj nowy numer konta:");
                                 }
 
                                 String phoneNumber = "";
-                                while(!admin.phoneNumberValidation(phoneNumber)) {
+                                while (!admin.phoneNumberValidation(phoneNumber)) {
                                     System.out.println("Podaj numer telefonu (9 cyfrowy format):");
                                     phoneNumber = scanner.nextLine();
                                 }
@@ -74,7 +80,7 @@ public class BankApplication {
                                 String newName = scanner.nextLine();
 
                                 String newPhoneNumber = "";
-                                while(!admin.phoneNumberValidation(newPhoneNumber)) {
+                                while (!admin.phoneNumberValidation(newPhoneNumber)) {
                                     System.out.println("Podaj nowy numer telefonu klienta: (9 cyfrowy format):");
                                     newPhoneNumber = scanner.nextLine();
                                 }
